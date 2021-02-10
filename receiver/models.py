@@ -3,7 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 class Logging(db.Model):
-    __tablename__ = "receiver_test"
+    # __tablename__ = "receiver_test"
+    __tablename__ = "logging"
     
     index = db.Column(db.Integer, primary_key = True)
     competition_index = db.Column(db.Integer, nullable = False)
