@@ -6,7 +6,7 @@ import time
 import requests
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost:5432/running'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost:5432/receiver'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
@@ -31,7 +31,7 @@ def handle_logging():
 
 @app.route('/command', methods= ['POST'])
 def handle_command():
-    url = 'http://localhost:5001/command'
+    url = 'http://raspberrypi:5000/command'
 
     data = request.get_json()
     payload = {}
