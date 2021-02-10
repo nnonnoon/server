@@ -31,7 +31,7 @@ def handle_logging():
 
 @app.route('/command', methods= ['POST'])
 def handle_command():
-    url = 'http://raspberrypi:5000/command'
+    url = 'http://raspberrypi.local:5000/command'
 
     data = request.get_json()
     payload = {}
