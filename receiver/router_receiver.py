@@ -16,8 +16,6 @@ migrate = Migrate(app, db)
 
 CORS(app)
 
-global competition_index
-
 @app.route('/logging', methods= ['POST'])
 def handle_logging():
     try:
@@ -57,6 +55,7 @@ def handle_logging():
 
 @app.route('/start', methods= ['POST'])
 def handle_start():
+    global competition_index
     try:
         data = request.get_json()
         competition_index = data["competition"]
