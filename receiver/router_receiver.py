@@ -21,7 +21,9 @@ CORS(app)
 def handle_logging():
     try:
         data = request.get_json()
-        new_logging = Logging(competition_index = data['competition'] , gate_id = data['gate_id'], tag_number = data['tag_number'], timestamp = data['timestamp'])
+        competition_index = data["competition"]
+        print(competition_index)
+        new_logging = Logging(competition_index = competition_index , gate_id = data['gate_id'], tag_number = data['tag_number'], timestamp = data['timestamp'])
         db.session.add(new_logging)
         db.session.commit()
         return jsonify({'message' : 'RECEIVED!!'}), 200
@@ -29,29 +31,29 @@ def handle_logging():
         return jsonify({'message' : 'FAILED!!'}), 400
 
 
-@app.route('/command', methods= ['POST'])
-def handle_command():
-    url = 'http://raspberrypi.local:5000/command'
+# @app.route('/command', methods= ['POST'])
+# def handle_command():
+#     url = 'http://raspberrypi.local:5000/command'
 
-    data = request.get_json()
-    payload = {}
-    payload["competition"] = data["competition"]
-    payload["command"] = data["command"]
+#     data = request.get_json()
+#     payload = {}
+#     payload["competition"] = data["competition"]
+#     payload["command"] = data["command"]
 
-    print(payload)
+#     print(payload)
 
-    while(True): 
-        try :
-            response = requests.post(url, json = payload)
+#     while(True): 
+#         try :
+#             response = requests.post(url, json = payload)
 
-            if response.ok == True:
-                return response.json()['message']
-                break
-            else:
-                return response.json()['message']
-        except(err):
-            # print(err)  
-            return jsonify({'message' : "Disconnect"}), 400
+#             if response.ok == True:
+#                 return response.json()['message']
+#                 break
+#             else:
+#                 return response.json()['message']
+#         except(err):
+#             # print(err)  
+#             return jsonify({'message' : "Disconnect"}), 400
 
 if __name__ == "__main__":
     app.run(host = '0.0.0.0', debug = True, port=5000)
