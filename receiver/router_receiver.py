@@ -6,7 +6,7 @@ import time
 import requests
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost:5432/receiver'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost:5432/running'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
@@ -16,12 +16,12 @@ migrate = Migrate(app, db)
 
 CORS(app)
 
+global competition_index
 
 @app.route('/logging', methods= ['POST'])
 def handle_logging():
     try:
         data = request.get_json()
-        competition_index = data["competition"]
         print(competition_index)
         new_logging = Logging(competition_index = competition_index , gate_id = data['gate_id'], tag_number = data['tag_number'], timestamp = data['timestamp'])
         db.session.add(new_logging)
@@ -54,6 +54,16 @@ def handle_logging():
 #         except(err):
 #             # print(err)  
 #             return jsonify({'message' : "Disconnect"}), 400
+
+@app.route('/start', methods= ['POST'])
+def handle_start():
+    try:
+        data = request.get_json()
+        competition_index = data["competition"]
+        return jsonify({'message' : 'START!!'}), 200
+    except(err):
+        print(err)
+        return jsonify({'message' : 'FAILED!!'}), 400
 
 if __name__ == "__main__":
     app.run(host = '0.0.0.0', debug = True, port=5000)
